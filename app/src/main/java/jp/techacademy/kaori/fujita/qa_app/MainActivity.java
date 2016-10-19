@@ -158,34 +158,23 @@ public class MainActivity extends AppCompatActivity {
 
 		// ナビゲーションドロワーの設定
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name){
-			//開いた時に呼ばれる
-			@Override
-			public void onDrawerOpened(View drawerView) {
-				// ログイン済みのユーザーを取得する
-				FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-				// ログインしていなければ、ドロワーにお気に入り一覧を表示しない
-				if (user == null) {
-//					drawerView.findViewById(R.id.nav_view).setVisibility(View.INVISIBLE);
-				} else {
-//					findViewById(R.id.nav_view).findViewById(R.id.nav_favorite).setVisibility(View.VISIBLE);
-//					Log.d("ログ R.id.nav_favorite", "a");
-				}
-
-			}
-		};
-
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, mToolbar, R.string.app_name, R.string.app_name);
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 
 		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
-//		＊＊fujita　エラーが発生する。findViewById(R.id.nav_favorite)がNullのようだ
-//		＜エラー内容＞
-//		　java.lang.NullPointerException: Attempt to invoke virtual method 'void android.view.View.setVisibility(int)' on a null object reference
-//		　at jp.techacademy.kaori.fujita.qa_app.MainActivity$3.onDrawerOpened(MainActivity.java:187)
-		findViewById(R.id.nav_view).findViewById(R.id.nav_favorite).setVisibility(View.INVISIBLE);
-
+		//お気に入りの表示非表示
+		Menu menu = navigationView.getMenu();
+		MenuItem item = menu.findItem(R.id.nav_favorite);
+		// ログイン済みのユーザーを取得する
+		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+		// ログインしていなければ、ドロワーにお気に入り一覧を表示しない
+		if (user == null) {
+			item.setVisible(false);
+		} else {
+			item.setVisible(true);
+		}
 
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
@@ -208,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
 					//お気に入り一覧へ遷移
 					Intent intent = new Intent(getApplicationContext(), FavoriteListActivity.class);
 					startActivity(intent);
-
 				}
 
 				DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -229,15 +217,6 @@ public class MainActivity extends AppCompatActivity {
 				return true;
 			}
 		});
-
-//		// ログイン済みのユーザーを取得する
-//		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//		// ログインしていなければ、ドロワーにお気に入り一覧を表示しない
-//		if (user == null) {
-//			findViewById(R.id.nav_favorite).setVisibility(View.INVISIBLE);
-//		} else {
-//			findViewById(R.id.nav_favorite).setVisibility(View.VISIBLE);
-//		}
 
 		// Firebase
 		mDatabaseReference = FirebaseDatabase.getInstance().getReference();
