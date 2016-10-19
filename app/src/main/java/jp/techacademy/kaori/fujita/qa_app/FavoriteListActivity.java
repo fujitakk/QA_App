@@ -66,8 +66,8 @@ public class FavoriteListActivity extends AppCompatActivity {
 				}
 			}
 
+			//fujita "mGenre"の値が適切でない
 			Question question = new Question(title, body, name, uid, dataSnapshot.getKey(), mGenre, bytes, answerArrayList);
-//			Log.d("ログ onChildAdded", dataSnapshot.getKey());
 
 			for(int f = 0; f < mQuestionArrayListFav.size(); f++ ) {
 //				Log.d("ログ ArrayListFav.get(f)", mQuestionArrayListFav.get(f));
@@ -158,13 +158,15 @@ public class FavoriteListActivity extends AppCompatActivity {
 		for(int q = 1; q <= 4; q++) {
 			mGenre = q;
 			mDatabaseReference = dataBaseReference.child(Const.ContentsPATH).child(String.valueOf(mGenre));
+//			mDatabaseReference = dataBaseReference.child(Const.ContentsPATH);
 			mDatabaseReference.addChildEventListener(mEventListener);
+//			Log.d("ログ mDatabaseReference", "ログログ");
 		}
-//		mGenre = 0;
 
 //		mQuestionArrayList.clear();
 		mfAdapter.setFavoriteArrayList(mQuestionArrayList);
 		mListView.setAdapter(mfAdapter);
+
 
 	}
 
