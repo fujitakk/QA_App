@@ -28,6 +28,10 @@ import java.util.Set;
 public class FavoriteListActivity extends AppCompatActivity {
 
 	private DatabaseReference mDatabaseReference;
+	private DatabaseReference mDatabaseReference1;
+	private DatabaseReference mDatabaseReference2;
+	private DatabaseReference mDatabaseReference3;
+	private DatabaseReference mDatabaseReference4;
 	private ArrayList<String> mQuestionArrayListFav;
 	private FavoriteListAdapter mfAdapter;
 	private ListView mListView;
@@ -52,6 +56,7 @@ public class FavoriteListActivity extends AppCompatActivity {
 			} else {
 				bytes = new byte[0];
 			}
+			String genre = (String) map.get("genre");
 
 			ArrayList<Answer> answerArrayList = new ArrayList<Answer>();
 			HashMap answerMap = (HashMap) map.get("answers");
@@ -67,7 +72,7 @@ public class FavoriteListActivity extends AppCompatActivity {
 			}
 
 			//fujita "mGenre"の値が適切でない
-			Question question = new Question(title, body, name, uid, dataSnapshot.getKey(), mGenre, bytes, answerArrayList);
+			Question question = new Question(title, body, name, uid, dataSnapshot.getKey(), Integer.parseInt(genre), bytes, answerArrayList);
 
 			for(int f = 0; f < mQuestionArrayListFav.size(); f++ ) {
 //				Log.d("ログ ArrayListFav.get(f)", mQuestionArrayListFav.get(f));
@@ -157,10 +162,9 @@ public class FavoriteListActivity extends AppCompatActivity {
 		DatabaseReference dataBaseReference = FirebaseDatabase.getInstance().getReference();
 		for(int q = 1; q <= 4; q++) {
 			mGenre = q;
-			mDatabaseReference = dataBaseReference.child(Const.ContentsPATH).child(String.valueOf(mGenre));
-//			mDatabaseReference = dataBaseReference.child(Const.ContentsPATH);
+			mDatabaseReference = dataBaseReference.child(Const.ContentsPATH).child(String.valueOf(q));
 			mDatabaseReference.addChildEventListener(mEventListener);
-//			Log.d("ログ mDatabaseReference", "ログログ");
+//			Log.d("ログ mDatabaseReference", "ログ");
 		}
 
 //		mQuestionArrayList.clear();
